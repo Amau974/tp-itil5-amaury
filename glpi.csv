@@ -1,0 +1,5 @@
+﻿"ID";"Titre";"Statut";"Dernière modification";"Date d'ouverture";"Priorité";"Demandeur - Demandeur";"Attribué à - Technicien";"Catégorie";"TTR"
+"3";"problème d'impression service comptabilité";"En cours (Attribué)";"2026-09-14 11:21";"2026-09-14 12:00";"Basse";"glpi";"tech";"";""
+"4";"problème d'accès au logiciel de compta";"En cours (Attribué)";"2026-09-14 11:20";"2026-09-14 12:00";"Très haute";"glpi";"tech";"";""
+"1";"Problème de connexion VPN";"En cours (Attribué)";"2026-09-14 11:19";"2026-09-14 12:00";"Haute";"glpi";"tech";"";""
+"2";"Problème réception d'email";"En cours (Attribué)";"2026-09-14 09:39";"2026-09-14 12:00";"Haute";"glpi";"tech";"";""
