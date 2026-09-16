@@ -1,0 +1,33 @@
+## Phase 1 — Gestion des incidents
+
+Cinq tickets ont été créés dans GLPI et priorisés selon la matrice impact/urgence ITIL. Le ticket T1 (serveur mail HS) a été classé P1 Critique car il impacte la totalité des 200 utilisateurs avec une urgence maximale — SLA de résolution fixé à 1 heure. Le ticket T3 (email suspect) a été qualifié en événement de sécurité et non en incident technique classique : il s'agit d'une tentative de phishing nécessitant une escalade SSI immédiate, classé P2 Haute. Le ticket T5 (DAF) est également P2 en raison du statut VIP et de l'impact décisionnel direct. L'imprimante (T4) est classée P3 Moyenne car un contournement existe, et la souris (T2) P4 Basse car l'impact est unitaire et minimal. L'ordre de traitement retenu est T1 → T3 → T5 → T4 → T2, justifié par la criticité métier et non par l'ordre d'arrivée.
+
+---
+
+## Phase 2 — Gestion des problèmes
+
+Un Problème (PROB-2026-001) a été créé dans GLPI et lié aux trois incidents similaires (ID 5, 10, 11) survenus sur deux semaines. La méthode des 5 Pourquoi a été appliquée avec un angle monitoring : la cause racine identifiée est l'absence de politique de supervision des actifs, ayant conduit à une dégradation RAM/CPU non détectée avant la coupure totale. Le workaround immédiat retenu est le redémarrage préventif du service mail toutes les 6 heures et la mise en place d'alertes RAM > 80% / CPU > 90%. Une entrée KEDB (KEDB-2026-001) a été créée dans la base de connaissances GLPI et liée au Problème pour documenter l'erreur connue et le workaround.
+
+---
+
+## Phase 3 — Gestion des changements
+
+Une RFC (RFC-2026-001) a été rédigée et tracée dans GLPI sous forme de Changement de type normal, lié au Problème PROB-2026-001. Le changement porte sur l'intégration de SRV-MAIL-01 dans l'outil de supervision de la DSI avec création des alertes RAM/CPU — résolution définitive de la cause racine identifiée en phase 2. Les risques identifiés (mauvaise configuration des seuils, indisponibilité brève) sont couverts par un plan de rollback basé sur un snapshot VM (RTO 15 min). La fenêtre de maintenance proposée est le samedi 2026-09-19 de 22h à 01h pour minimiser l'impact. La validation CAB simulée est unanimement favorable (DSI, métier, sécurité) — statut du changement : Accepté.
+
+---
+
+## Phase 4 — Gestion des configurations (CMDB)
+
+La fiche CI du serveur de messagerie (SRV-MAIL-01) a été créée dans GLPI (Parc → Ordinateurs) avec le statut En Production et la localisation Salle serveur. Trois CI dépendants ont été créés : SRV-AD-01 (authentification), SRV-BACKUP-01 (sauvegarde des boîtes mail) et POSTE-CLIENT-01 (représentant les 200 postes utilisateurs). Les relations d'impact ont été tracées via le module Analyse d'impact de GLPI, produisant un graphe orienté depuis SRV-MAIL-01 vers ses CI enfants. La simulation de panne montre qu'une indisponibilité de SRV-MAIL-01 impacte l'authentification mail, les sauvegardes, et les 200 utilisateurs sans messagerie interne ni externe — criticité Haute, RTO cible 1 heure.
+
+---
+
+## Phase 5 — Gestion des demandes de service
+
+Une demande de service (Service Request) a été créée dans GLPI pour l'onboarding IT de Julie, nouvelle chargée de communication, distincte d'un incident car il s'agit d'un besoin planifié et anticipé sans aucun dysfonctionnement. Ce choix de type "Demande" est fondamental en ITIL : l'onboarding est un processus prévisible relevant du catalogue de services, non d'une rupture de service. Le catalogue déroulé comprend quatre éléments : création du compte utilisateur AD et boîte mail, attribution du poste et des périphériques (PC, souris, clavier, écran), accès VPN et accès au dossier partagé "Communication". Le SLA appliqué est de 5 jours ouvrés — distinct du SLA incident qui répond à une urgence opérationnelle — avec une date cible de mise à disposition fixée au 2026-09-21, veille de l'arrivée de Julie, afin que tout soit opérationnel dès son premier jour.
+
+---
+
+## Cohérence globale — Liens entre objets GLPI
+
+Tous les objets créés sont reliés entre eux dans GLPI : les incidents T1, J-7 et J-14 sont liés au Problème PROB-2026-001 ; le Changement RFC-2026-001 est lié au même Problème ; la KEDB KEDB-2026-001 est liée au Problème ; le CI SRV-MAIL-01 est lié à ses dépendances via le graphe d'impact. Cette traçabilité complète garantit la cohérence du fil conducteur ITIL : incident → problème → cause racine → changement → CI impacté.
